@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchSinglePost } from './postData'
-import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { Button, Grid, Card, CardActions, CardContent, Typography , Box} from '@mui/material'
 
 export const SinglePostDetail = () => {
  
@@ -16,24 +16,38 @@ export const SinglePostDetail = () => {
 
 
   return (
-   <div>
-    <div>
-      <h2>Post Detail</h2>
+   
+    <Box sx={{ mt: 5, mb:7}}>
+        <Typography gutterBottom variant="h1" component="h1" sx={{mb:2, pl:5}}>
+          Post Detail
+        </Typography>
         {post.loading && <div>Loading...</div>}
         {!post.loading && post.error ? <div>Error: {post.error}</div> : null}
         {!post.loading ? (
-          <ul>
-            <h1>Post ID: {post.post.id}</h1>
-             Post Title  {post.post.title}
-             Post Body {post.post.body}
-            <div>
-              <button type="button" className="btn btn-primary Data"><Link to = {`/post/${post.post.id}/comments`} >{'Show Comments'}</Link></button>
-              <button type="button" className="btn btn-primary Data"><Link to = {`/post/edit/${post.post.id}`} >{'Edit post'}</Link></button>
-            </div>
-          </ul>
-        ) : null}
-    </div>
-   </div>
+              <Grid xs={12} sm={6} md={4}>
+              <Card
+                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+              >
+               <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Post Id: {post.post.id}
+                  </Typography>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Post Title  {post.post.title} 
+                  </Typography>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Post Body {post.post.body}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" href={`/post/edit/${post.post.id}`}>Edit</Button>
+                  <Button size="small"  href={`/post/${post.post.id}/comments`}>Show Comments</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ) : null}
+    </Box>
+   
   )
 }
 

@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import {editComments , updateComment} from './commentSlice' 
-import { Link } from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import { Button, Grid, Card, CardActions, CardContent, Typography } from '@mui/material'
 
 const EditComment = () => {
   const comment= useSelector(state => state.comments)
@@ -37,62 +41,107 @@ const EditComment = () => {
     return (
       <>
         {editData ? (
-             <div>
-             <h1 >Edit Comment </h1>
-             <form action="">
-               <div> <label htmlFor="floatingTextarea">Name</label></div>
-               <div>
-                 <input
-                   type="text"
-                   value={name}
-                   onChange={(e) => setValues({ ...values, name: e.target.value })}
-                   placeholder="Enter Post Title"
-                   className="form-control"
-                   aria-describedby="emailHelp"
-                 />
-               </div>
-               <div> <label htmlFor="floatingTextarea">Email</label></div>
-               <div className="form-floating">
-                 <textarea
-                   className="form-control"
-                   value={email}
-                   onChange={(e) => setValues({ ...values, email: e.target.value })}
-                   placeholder="add post description"
-                 />
-                
-               </div>
-               <div> <label htmlFor="floatingTextarea">Body</label></div>
-               <div className="form-floating">
-                 <textarea
-                   className="form-control"
-                   value={body}
-                   onChange={(e) => setValues({ ...values, body: e.target.value })}
-                   placeholder="add post description"
-                 />
-                
-               </div>
-               <div className="mt-4 d-flex align-items-end justify-content-end">
-                 <button className="btn btn-primary" onClick={() => navigate("/")}>
-                   Go Home
-                 </button>
-                 <button
-                   className="btn btn-danger ms-4"
-                   type="submit"
-                   onClick= { handleUpdate }
-                 >
-                   submit
-                 </button>
-               </div>
-             </form>
-            </div>
+
+            <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+      
+              <Typography component="h1" variant="h5">
+                Edit Comment
+              </Typography>
+              <Box component="form" onSubmit="" noValidate sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  autoFocus
+                  type="text" value={name} onChange={(e) => setValues({ ...values, name: e.target.value })} placeholder="Enter name" 
+
+                />
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  autoFocus
+                  type="text" value={email} onChange={(e) => setValues({ ...values, email: e.target.value })} placeholder="Enter email"
+                />
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="body"
+                  label="Body"
+                  autoFocus
+                  value={body} onChange={(e) => setValues({ ...values, body: e.target.value })} placeholder="add description"
+                />
+      
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  onClick= {handleUpdate}
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Update
+                </Button>
+      
+              </Box>
+            </Box>
+            <Button
+              type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => navigate("/")}
+              >
+                Back to Home
+              </Button>
+          </Container>
+                      
         ) : (
-        <div>
-          <h1> ID {values.id}</h1>
-            <h1>Title {values.title}</h1>
-            <h1>Body {values.body}</h1>
-            <h1>User Id{values.userId}</h1>
-            <button type="button" className="btn btn-primary Data"><Link to = {`/`} >{'Back to home'}</Link></button>
-        </div>
+
+        <Grid xs={12} sm={6} md={4}>
+        <Card
+          sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+         <CardContent sx={{ flexGrow: 1 }}>
+            <Typography gutterBottom variant="h5" component="h2">
+              ID {values.id}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              Email : {values.email}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              Body {values.body}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              Name : {values.name}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              Post Id : {values.postId}
+            </Typography>
+          </CardContent>
+          <CardActions>
+          <Button
+              type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => navigate("/")}
+              >
+                Back to Home
+              </Button>
+          </CardActions>
+        </Card>
+      </Grid>
         )}
       </>
     );

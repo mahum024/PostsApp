@@ -4,7 +4,9 @@ import { useParams } from 'react-router-dom';
 import { fetchComments } from './commentSlice';
 import {deleteComment} from './commentSlice'
 import CreateComments from './createComments';
-import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import { Button, Grid, Card, CardActions, CardContent, Typography} from '@mui/material'
+
 export const CommentView = () => {
   let { id } = useParams();
   const [showCreateBtn, setShowCreateBtn] = useState(true);
@@ -30,7 +32,7 @@ export const CommentView = () => {
     return (
       <>
         {showCreateBtn ? (
-            <div> <button type="button" className="btn btn-primary Data" onClick={ handleCreate}>{'Create Comment'}</button> </div>
+              <Button variant="contained" onClick={ handleCreate}>{'Create Comment'} </Button>
         ) : (
          <CreateComments submit={handleSubmit}/>
         )}
@@ -39,27 +41,38 @@ export const CommentView = () => {
   };
 
   return (
-    <div>
-      <div className='CreatePost'>{showCreatedPostBtn()}</div>
+    <Box sx={{ mt: 3, mb:3}}>
+      <Box className='Create'>{showCreatedPostBtn()}</Box>
      
-      <h2>Comments</h2>
+      <Typography gutterBottom variant="h3" component="h3" sx={{mt: 3, mb:3, pl:5}}>
+        Comments
+      </Typography>
       {comments.loading && <div>Loading...</div>}
       {!comments.loading && comments.error ? <div>Error: {comments.error}</div> : null}
       {!comments.loading && comments.comments.length ? (
-        <ul>
-          {comments.comments.map(comments => (
-            <li key={comments.id}>
-              <h1>ID {comments.id}</h1>
-              <p>BODY {comments.body}</p>
-              <p>NAME {comments.name}</p>
-              <p>POST ID{comments.postId}</p>
-              <p>EMAIL {comments.email}</p>
-           
-            <button type="button" className="btn btn-primary Data"><Link to = {`/post/${comments.postId}/comments/edit/${comments.id}`} >{'Edit post'}</Link></button>
-            <button onClick= { ()=> handleDelete(comments.id)}>delete</button></li>
-          ))}
-        </ul>
+        <Grid container spacing={4}>
+        {comments.comments.map(comments => (
+          <Grid item key={comments.id} xs={12} sm={6} md={4}>
+            <Card
+              sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+            >
+            <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Post No: {comments.id}
+                </Typography>
+                <Typography>
+                  Name {comments.name}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" href={`/post/${comments.postId}/comments/edit/${comments.id}`}>Edit</Button>
+                <Button size="small" onClick={()=> handleDelete(comments.id)} >Delete</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+        </Grid>
       ) : null}
-    </div>
+    </Box>
   )
 }

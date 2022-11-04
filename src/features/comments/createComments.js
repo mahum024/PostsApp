@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {createComment} from './commentSlice'
 import uuid from 'react-uuid';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 const CreateComments = (props) => {
   const [values, setValues] = useState({ name: "", body: "", email:"", id: uuid()});
   const { body, name, email } = values;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,26 +22,60 @@ const CreateComments = (props) => {
   };
   
  return (
-    <div className="Form">
-      <h1 >Create Comments </h1>
-      <form action="">
-        <div>
-          <input type="text" value={name} onChange={(e) => setValues({ ...values, name: e.target.value })} placeholder="Enter name" />
-        </div>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
 
-        <div>
-          <input type="text" value={email} onChange={(e) => setValues({ ...values, email: e.target.value })} placeholder="Enter email" />
-        </div>
+        <Typography component="h1" variant="h5">
+          New Comment
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            fullWidth
+            id="name"
+            label="Name"
+            autoFocus
+            type="text" value={name} onChange={(e) => setValues({ ...values, name: e.target.value })} placeholder="Enter name" 
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="email"
+            label="Email"
+            autoFocus
+            type="text" value={email} onChange={(e) => setValues({ ...values, email: e.target.value })} placeholder="Enter email"
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="body"
+            label="Body"
+            autoFocus
+            value={body} onChange={(e) => setValues({ ...values, body: e.target.value })} placeholder="add description"
+          />
 
-        <div >
-          <textarea value={body} onChange={(e) => setValues({ ...values, body: e.target.value })} placeholder="add post description" />
-        </div>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick= { handleSubmit}
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Add
+          </Button>
 
-        <div>
-          <button type="submit" onClick= { handleSubmit} >submit </button>
-        </div>
-      </form>
-     </div>
+        </Box>
+      </Box>
+  
+    </Container>
   );
 };
 
