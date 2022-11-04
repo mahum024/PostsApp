@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deletePost, fetchPosts } from './postSlice'
-import { Link } from 'react-router-dom';
 import CreatePost from './createPost';
-
+import Box from '@mui/material/Box';
+import { Button, Grid, Card, CardActions, CardContent, Typography } from '@mui/material'
 export const PostView = () => {
 
   const dispatch = useDispatch()
@@ -27,7 +27,7 @@ export const PostView = () => {
     return (
       <>
         {showCreateBtn ? (
-            <div> <button type="button" className="btn btn-primary Data" onClick={ handleCreate}>{'Create POst'}</button> </div>
+            <Button variant="contained" onClick={ handleCreate} >Create Post</Button>
         ) : (
         <CreatePost submit={handleSubmit}/>
         )}
@@ -37,30 +37,44 @@ export const PostView = () => {
 
   useEffect(() => {
     dispatch(fetchPosts())
-  }, [])
+  }, [dispatch])
 
   return (
     <>
-      <div className='CreatePost'>{showCreatedPostBtn()}</div>
-      <div>
-        <h2>List of Posts</h2>
-        {post.loading && <div>Loading...</div>}
-        {!post.loading && post.error ? <div>Error: {post.error}</div> : null}
+     
+      <Box sx={{ mt: 3}}>
+        <Box className='Create'>{showCreatedPostBtn()}</Box>
+        <Typography gutterBottom variant="h5" component="h2" sx={{ mt: 3, mb:3, pl:5}}>
+          List of Post
+        </Typography>
+        {post.loading && <Box>Loading...</Box>}
+        {!post.loading && post.error ? <Box>Error: {post.error}</Box> : null}
         {!post.loading && post.posts.length ? (
-          <ul>
-            {post.posts.map(post => (
-                <li key={post.id}>
-                <h1>ID {post.id} </h1> 
-                <div>USER ID {post.userId}  </div>
-                <div>Post Title {post.title} </div>
-                <div>Post Body {post.body}  </div>
-                <button type="button" className="btn btn-primary Data"><Link to = {`/post/${post.id}`} >{'Show Project Details'}</Link></button>
-                <button type="button" className="btn btn-primary Data" onClick={ ()=> handleDelete(post.id)}>{'Delete posts'}</button>
-              </li>
-            ))}
-          </ul>
+           <Grid container spacing={4}>
+           {post.posts.map((post) => (
+             <Grid item key={post.id} xs={12} sm={6} md={4}>
+               <Card
+                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                <CardContent sx={{ flexGrow: 1 }}>
+                   <Typography gutterBottom variant="h5" component="h2">
+                     Post No: {post.id}
+                   </Typography>
+                   <Typography>
+                     Title {post.title}
+                   </Typography>
+                 </CardContent>
+                 <CardActions>
+                   <Button size="small" href={`/post/${post.id}`}>View</Button>
+                   <Button size="small" onClick={ ()=> handleDelete(post.id)} >Delete</Button>
+                 </CardActions>
+               </Card>
+             </Grid>
+           ))}
+         </Grid>
         ) : null}
-      </div>
+      </Box>
+     
     </>
   )
 }

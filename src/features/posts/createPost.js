@@ -3,7 +3,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createPost } from './postSlice'
 import uuid from 'react-uuid';
-
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 const CreatePost = (props) => {
   const [values, setValues] = useState({ title: "", body: "", userId: uuid(), id: uuid()});
   const { title, body,  userId } = values;
@@ -19,22 +24,53 @@ const CreatePost = (props) => {
   };
   
  return (
-    <div className="Form">
-      <h1 >Create Post </h1>
-      <form action="">
-        <div>
-          <input type="text" value={title} onChange={(e) => setValues({ ...values, title: e.target.value })} placeholder="Enter Post Title" />
-        </div>
-       
-        <div >
-          <textarea value={body} onChange={(e) => setValues({ ...values, body: e.target.value })} placeholder="add post description" />
-        </div>
 
-        <div>
-          <button type="submit" onClick= { handleSubmit} >submit </button>
-        </div>
-      </form>
-     </div>
+      <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+
+        <Typography component="h1" variant="h5">
+          New Post
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            fullWidth
+            id="title"
+            label="Title"
+            autoFocus
+            type="text" value={title} onChange={(e) => setValues({ ...values, title: e.target.value })} placeholder="Enter Post Title"
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="body"
+            label="Body"
+            autoFocus
+            value={body} onChange={(e) => setValues({ ...values, body: e.target.value })} placeholder="add post description"
+          />
+         <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick= { handleSubmit}
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Create POst
+          </Button>
+
+        </Box>
+      </Box>
+  
+    </Container>
+    
   );
 };
 
